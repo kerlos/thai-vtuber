@@ -52,6 +52,7 @@ const PlaylistCard = ({ playlist, onSelect, t, locale }: { playlist: any; onSele
   >
     <div className="relative aspect-video">
       <Image
+        unoptimized={true}
         src={playlist.thumbnail}
         alt={playlist.title}
         fill
@@ -147,6 +148,7 @@ const PlaylistDetail = ({ playlistId, onBack, t, locale }: { playlistId: string;
             
             <div className="relative w-32 aspect-video flex-shrink-0">
               <Image
+                unoptimized={true}
                 src={video.thumbnail}
                 alt={video.title}
                 fill

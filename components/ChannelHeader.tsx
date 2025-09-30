@@ -150,6 +150,7 @@ export default function ChannelHeader({ channel }: ChannelHeaderProps) {
               <Image
                 src={channel.thumbnail_icon_url}
                 alt={channel.title}
+                unoptimized={true}
                 width={128}
                 height={128}
                 className="w-24 h-24 md:w-24 md:h-24 rounded-full cursor-pointer transform transition-all duration-300 ease-in-out group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-gray-400/30 group-hover:ring-4 group-hover:ring-blue-100"

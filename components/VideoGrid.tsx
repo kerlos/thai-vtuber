@@ -99,6 +99,7 @@ export default function VideoGrid({ videos, isLoading, error }: VideoGridProps) 
           >
              <div className="relative aspect-video mb-3 overflow-hidden rounded-lg bg-gray-100">
                <Image
+                unoptimized={true}
                  src={video.thumbnail}
                  alt={video.title}
                  fill

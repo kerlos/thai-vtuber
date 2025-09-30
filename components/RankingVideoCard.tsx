@@ -56,6 +56,7 @@ export default function RankingVideoCard({ video, rank }: RankingVideoCardProps)
         prefetch={false}
       >
         <Image
+          unoptimized={true}
           src={video.thumbnail_image_url}
           alt={video.title}
           fill

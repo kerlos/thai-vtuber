@@ -76,6 +76,7 @@ export const ChannelList = ({ channels, startIndex = 0, subscriberRanks, sortFie
               <div className="flex items-start gap-3">
                 <div className="flex-shrink-0">
                   <Image
+                    unoptimized={true}
                     src={channel.thumbnail_icon_url}
                     alt={`${channel.title} thumbnail`}
                     width={48}
@@ -174,6 +175,7 @@ export const ChannelList = ({ channels, startIndex = 0, subscriberRanks, sortFie
                   <div className="flex items-center group">
                     <div className="flex-shrink-0 h-10 w-10 relative">
                       <Image
+                        unoptimized={true}
                         src={channel.thumbnail_icon_url}
                         alt={`${channel.title} thumbnail`}
                         width={40}

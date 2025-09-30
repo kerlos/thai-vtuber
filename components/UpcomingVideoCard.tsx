@@ -56,6 +56,7 @@ export default function UpcomingVideoCard({ video }: UpcomingVideoCardProps) {
         prefetch={false}
       >
         <Image
+          unoptimized={true}
           src={video.thumbnail_image_url}
           alt={video.title}
           fill
@@ -93,6 +94,7 @@ export default function UpcomingVideoCard({ video }: UpcomingVideoCardProps) {
           {!channelImageError && (
             <div className="relative w-9 h-9 rounded-full overflow-hidden bg-gray-200">
               <Image
+                unoptimized={true}
                 src={video.channel_thumbnail_image_url}
                 alt={video.channel_title}
                 fill
