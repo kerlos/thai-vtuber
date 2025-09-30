@@ -11,6 +11,7 @@ import { calculateDashboardStats, formatNumber, isChannelActive, getPaginatedIte
 import { SearchAndFilters } from '@/components/SearchAndFilters';
 import { ChannelList } from '@/components/ChannelList';
 import { Pagination } from '@/components/Pagination';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 export default function Dashboard() {
   const t = useTranslations();
@@ -196,6 +197,7 @@ export default function Dashboard() {
           </p>
         </div>
         <div className="flex items-center gap-2">
+          <LanguageSwitcher />
           <Link
             href="/register"
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors text-sm font-medium"
