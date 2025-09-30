@@ -78,4 +78,4 @@ This application is powered by comprehensive data provided by [vtuber.chuysan.co
 
 ### Channel Registration
 
-VTuber channel owners can register their channels directly through the [vtuber.chuysan.com registration portal](https://vtuber.chuysan.com/#/register) to ensure their channels are included in the analytics and to keep their information up to date.
+VTuber channel owners can register their channels directly through the [vtuber registration portal](https://vtuber.kerlos.in.th/register) to ensure their channels are included in the analytics and to keep their information up to date.

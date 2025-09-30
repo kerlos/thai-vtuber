@@ -193,15 +193,23 @@ export default function Dashboard() {
             Browse and explore Thai VTuber channels
           </p>
         </div>
-        <Link
-          href="https://github.com/kerlos/thai-vtuber"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 px-3 py-2 bg-black text-white hover:bg-gray-800 rounded-lg transition-colors text-sm font-medium"
-        >
-          <Github className="w-4 h-4" />
-          <span className="hidden sm:inline">Repository</span>
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/register"
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors text-sm font-medium"
+          >
+            <span>Submit Channel</span>
+          </Link>
+          <Link
+            href="https://github.com/kerlos/thai-vtuber"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-3 py-2 bg-black text-white hover:bg-gray-800 rounded-lg transition-colors text-sm font-medium"
+          >
+            <Github className="w-4 h-4" />
+            <span className="hidden sm:inline">Repository</span>
+          </Link>
+        </div>
       </div>
         {/* Quick Stats */}
         {stats && (
@@ -229,21 +237,45 @@ export default function Dashboard() {
         />
 
         {/* Channel List */}
-        <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
-          <ChannelList 
-            channels={paginatedChannels} 
-            startIndex={(pagination.currentPage - 1) * pagination.pageSize}
-            subscriberRanks={subscriberRanks}
-            sortField={sortField}
-            sortOrder={sortOrder}
-            onSort={handleSort}
-          />
-          <Pagination
-            pagination={pagination}
-            onPageChange={handlePageChange}
-            onPageSizeChange={handlePageSizeChange}
-          />
-        </div>
+        {filteredChannels.length === 0 && filters.search.trim() !== '' ? (
+          <div className="bg-white rounded-lg shadow-md border border-gray-200 p-8 text-center">
+            <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No channels found</h3>
+            <p className="text-gray-600 mb-4">
+              We couldn't find any channels matching your search term "{filters.search}".
+            </p>
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <p className="text-sm text-blue-800 mb-2">
+                <strong>Don't see your favorite VTuber?</strong>
+              </p>
+              <p className="text-sm text-blue-700">
+                You can submit a channel for inclusion via our{' '}
+                <Link 
+                  href="/register"
+                  className="font-semibold text-blue-600 hover:text-blue-800 underline"
+                >
+                  register page
+                </Link>
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
+            <ChannelList 
+              channels={paginatedChannels} 
+              startIndex={(pagination.currentPage - 1) * pagination.pageSize}
+              subscriberRanks={subscriberRanks}
+              sortField={sortField}
+              sortOrder={sortOrder}
+              onSort={handleSort}
+            />
+            <Pagination
+              pagination={pagination}
+              onPageChange={handlePageChange}
+              onPageSizeChange={handlePageSizeChange}
+            />
+          </div>
+        )}
     </div>
   );
 }

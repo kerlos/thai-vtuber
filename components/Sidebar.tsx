@@ -118,7 +118,7 @@ export const Sidebar = ({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }:
         <div className="px-4 py-2">
           <hr className="border-gray-200 mb-3" />
           <Link
-            href="https://vtuber.chuysan.com/#/register"
+            href="https://vtuber.kerlos.in.th/register"
             target="_blank"
             rel="noopener noreferrer"
             className={`
@@ -216,7 +216,7 @@ export const Sidebar = ({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }:
         <div className="px-4 py-2">
           <hr className="border-gray-200 mb-3" />
           <Link
-            href="https://vtuber.chuysan.com/#/register"
+            href="https://vtuber.kerlos.in.th/register"
             target="_blank"
             rel="noopener noreferrer"
             onClick={onMobileToggle}
