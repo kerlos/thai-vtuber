@@ -101,8 +101,8 @@ export default function VideosList({ activeTab }: VideosListProps) {
         </div>
         
         {/* Loading videos grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {Array.from({ length: 8 }).map((_, i) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+          {Array.from({ length: 12 }).map((_, i) => (
             <VideoSkeleton key={i} />
           ))}
         </div>
@@ -184,7 +184,7 @@ export default function VideosList({ activeTab }: VideosListProps) {
                   <span className="text-sm text-red-600 font-medium">LIVE</span>
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
                 {liveVideos.map((video) => (
                   <LiveVideoCard key={video.id} video={video as LiveVideo} />
                 ))}
@@ -196,7 +196,7 @@ export default function VideosList({ activeTab }: VideosListProps) {
           {upcomingVideos.length > 0 && (
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-gray-900">Upcoming</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
                 {upcomingVideos.map((video) => (
                   <UpcomingVideoCard key={video.id} video={video as UpcomingVideo} />
                 ))}
@@ -205,7 +205,7 @@ export default function VideosList({ activeTab }: VideosListProps) {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
           {videos.map((video, index) => {
             switch (activeTab) {
               case '24hr':
