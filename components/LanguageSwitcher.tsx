@@ -15,9 +15,6 @@ export function LanguageSwitcher() {
     if (newLocale === locale) return;
     
     startTransition(() => {
-      // @ts-expect-error -- TypeScript will validate that only known locales
-      // are used in combination with pathnames. Since the two will always
-      // match for the current route, we can skip runtime checks.
       router.replace(pathname, {locale: newLocale});
     });
   };
