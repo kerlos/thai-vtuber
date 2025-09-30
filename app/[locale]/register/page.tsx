@@ -1,10 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { Loader, AlertCircle, CheckCircle2, Link as LinkIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
+import { useVTuberData } from '@/hooks/useVTuberData';
 
 interface ChannelIdResponse {
   channelId: string;
@@ -19,6 +20,15 @@ export default function SubmitChannelPage() {
   const [channelUrl, setChannelUrl] = useState('');
   const [channelType, setChannelType] = useState<'1' | '2'>('1');
   const [fetchedChannelId, setFetchedChannelId] = useState<string | null>(null);
+
+  // Fetch existing VTuber channels to check for duplicates
+  const { data: vtuberData, isLoading: isLoadingVTubers } = useVTuberData();
+
+  // Check if the fetched channel ID already exists in the database
+  const isDuplicate = useMemo(() => {
+    if (!fetchedChannelId || !vtuberData?.result) return false;
+    return vtuberData.result.some(channel => channel.channel_id === fetchedChannelId);
+  }, [fetchedChannelId, vtuberData]);
 
   // Mutation to lookup channel ID from URL
   const lookupMutation = useMutation({
@@ -75,7 +85,7 @@ export default function SubmitChannelPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!fetchedChannelId) return;
+    if (!fetchedChannelId || isDuplicate) return;
 
     registerMutation.mutate({
       channelId: fetchedChannelId,
@@ -161,7 +171,7 @@ export default function SubmitChannelPage() {
             )}
 
             {/* Channel Found Success */}
-            {fetchedChannelId && (
+            {fetchedChannelId && !isDuplicate && (
               <div className="flex items-start gap-2 p-4 bg-green-50 border border-green-200 rounded-lg">
                 <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
                 <div className="flex-1">
@@ -179,11 +189,34 @@ export default function SubmitChannelPage() {
                 </div>
               </div>
             )}
+
+            {/* Duplicate Channel Warning */}
+            {fetchedChannelId && isDuplicate && (
+              <div className="flex items-start gap-2 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-yellow-800">{t('Channel already exists')}</p>
+                  <p className="text-sm text-yellow-700 mt-1">
+                    {t('This channel is already registered in our database')}
+                  </p>
+                  <p className="text-sm text-yellow-600 mt-1 font-mono break-all">
+                    {t('Channel ID:') + ' ' + fetchedChannelId}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={handleReset}
+                    className="cursor-pointer text-sm text-yellow-700 hover:text-yellow-800 underline mt-2"
+                  >
+                    {t('Try a different channel')}
+                  </button>
+                </div>
+              </div>
+            )}
           </form>
         </div>
 
         {/* Step 2: Channel Type and Submit */}
-        {fetchedChannelId && (
+        {fetchedChannelId && !isDuplicate && (
           <div className="pt-6 border-t border-gray-200">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
               {t('Step 2: Select Channel Type')}
