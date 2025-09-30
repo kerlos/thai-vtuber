@@ -46,82 +46,73 @@ const getRankStyling = (rank: number) => {
 
 export default function RankingVideoCard({ video, rank }: RankingVideoCardProps) {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-200">
-      <div className="flex flex-col lg:flex-row">
-        {/* Video Thumbnail */}
-        <div className="lg:w-72 w-full flex-shrink-0">
+    <div className="group cursor-pointer">
+      {/* Video Thumbnail */}
+      <Link
+        href={`https://www.youtube.com/watch?v=${video.id}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block relative aspect-video bg-gray-100 rounded-xl overflow-hidden mb-3"
+        prefetch={false}
+      >
+        <Image
+          src={video.thumbnail_image_url}
+          alt={video.title}
+          fill
+          className="object-cover group-hover:scale-105 transition-transform duration-200"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            if (target.src.includes('i.ytimg.com')) {
+              target.src = target.src.replace('maxresdefault', 'hqdefault');
+            }
+          }}
+        />
+        {/* Rank badge */}
+        <div className={`absolute top-2 left-2 w-10 h-10 rounded-full flex items-center justify-center font-bold text-base shadow-lg ${getRankStyling(rank)}`}>
+          {rank}
+        </div>
+      </Link>
+
+      {/* Video Info */}
+      <div className="flex gap-3">
+        {/* Rank indicator (alternative display) */}
+        <div className="flex-shrink-0 pt-1">
+          <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm ${getRankStyling(rank)}`}>
+            {rank}
+          </div>
+        </div>
+
+        {/* Video details */}
+        <div className="flex-1 min-w-0">
           <Link
             href={`https://www.youtube.com/watch?v=${video.id}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="block relative aspect-video bg-gray-100 rounded-lg overflow-hidden"
             prefetch={false}
           >
-            <Image
-              src={video.thumbnail_image_url}
-              alt={video.title}
-              fill
-              className="object-cover hover:scale-105 transition-transform duration-200"
-              sizes="(max-width: 1024px) 100vw, 256px"
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                if (target.src.includes('i.ytimg.com')) {
-                  target.src = target.src.replace('maxresdefault', 'hqdefault');
-                }
-              }}
-            />
-            {/* Rank overlay */}
-            <div className={`absolute top-2 left-2 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${getRankStyling(rank)}`}>
-              {rank}
-            </div>
-            {/* View count overlay */}
-            <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-xs">
-              {formatNumber(video.view_count)} views
-            </div>
+            <h3 className="font-semibold text-sm text-gray-900 line-clamp-2 mb-1 group-hover:text-blue-600 transition-colors">
+              {video.title}
+            </h3>
           </Link>
-        </div>
 
-        {/* Video Info */}
-        <div className="flex-1 p-4 flex flex-col justify-between">
-          <div>
-            <Link
-              href={`https://www.youtube.com/watch?v=${video.id}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block"
-              prefetch={false}
-            >
-              <h3 className="font-semibold text-gray-900 hover:text-blue-600 transition-colors mb-2 line-clamp-2">
-                {video.title}
-              </h3>
-            </Link>
+          <Link
+            href={`/channel/${video.channel_id}`}
+            className="text-sm text-gray-600 hover:text-gray-900 block mb-1"
+            prefetch={false}
+            onClick={() => sendGAEvent('event', 'channel_click', {
+              channelId: video.channel_id
+            })}
+          >
+            {video.channel_title}
+          </Link>
 
-            {/* Channel info */}
-            <Link
-              href={`/channel/${video.channel_id}`}
-              className="flex items-center gap-2 mb-3 group"
-              prefetch={false}
-              onClick={() => sendGAEvent('event', 'channel_click', {
-                channelId: video.channel_id
-              })}
-            >
-              <span className="text-sm text-gray-600 group-hover:text-gray-900 font-medium">
-                {video.channel_title}
-              </span>
-            </Link>
-          </div>
-
-          {/* Stats */}
-          <div className="space-y-2">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 text-sm text-gray-600">
-              <div className="flex items-center gap-1">
-                <Eye className="w-4 h-4" />
-                <span>{formatNumber(video.view_count)}</span>
-              </div>
-            </div>
-            
-            <div className="text-xs text-gray-500">
-              Published {formatDate(video.published_at)}
+          <div className="text-xs text-gray-600">
+            <div className="flex items-center gap-1">
+              <Eye className="w-3 h-3" />
+              <span>{formatNumber(video.view_count)} views</span>
+              <span>•</span>
+              <span>{formatDate(video.published_at)}</span>
             </div>
           </div>
         </div>
