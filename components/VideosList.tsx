@@ -33,12 +33,12 @@ const VideoSkeleton = () => (
 );
 
 export default function VideosList({ activeTab }: VideosListProps) {
-  // Always call all hooks at the top level
-  const liveQuery = useLiveVideos();
-  const upcomingQuery = useUpcomingVideos();
-  const ranking24hrQuery = use24HrRankingVideos();
-  const ranking3daysQuery = use3DaysRankingVideos();
-  const ranking7daysQuery = use7DaysRankingVideos();
+  // Only fetch data for the active tab to optimize performance
+  const liveQuery = useLiveVideos(activeTab === 'live-upcoming');
+  const upcomingQuery = useUpcomingVideos(activeTab === 'live-upcoming');
+  const ranking24hrQuery = use24HrRankingVideos(activeTab === '24hr');
+  const ranking3daysQuery = use3DaysRankingVideos(activeTab === '3days');
+  const ranking7daysQuery = use7DaysRankingVideos(activeTab === '7days');
 
   // Select appropriate data based on active tab
   const getQueryResult = () => {
