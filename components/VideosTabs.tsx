@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslations } from 'next-intl';
 import { VideoTabType } from '@/types/videos';
 
 interface VideosTabsProps {
@@ -7,14 +8,15 @@ interface VideosTabsProps {
   onTabChange: (tab: VideoTabType) => void;
 }
 
-const tabs = [
-  { id: 'live-upcoming' as const, label: 'Live & Upcoming' },
-  { id: '24hr' as const, label: '24 Hours' },
-  { id: '3days' as const, label: '3 Days' },
-  { id: '7days' as const, label: '7 Days' },
-];
-
 export default function VideosTabs({ activeTab, onTabChange }: VideosTabsProps) {
+  const t = useTranslations();
+  
+  const tabs = [
+    { id: 'live-upcoming' as const, label: t('Live & Upcoming') },
+    { id: '24hr' as const, label: t('24 Hours') },
+    { id: '3days' as const, label: t('3 Days') },
+    { id: '7days' as const, label: t('7 Days') },
+  ];
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-1">
       <nav className="flex gap-1 overflow-x-auto scrollbar-hide">

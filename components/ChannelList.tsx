@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { sendGAEvent } from '@next/third-parties/google';
+import { useTranslations } from 'next-intl';
+import { useRouter } from '@/i18n/navigation';
 import { VTuberChannel } from '@/types/vtuber';
 import { formatNumber, formatDate, isChannelActive } from '@/utils/vtuberStats';
 import { ExternalLink, Users, Eye, Calendar, RefreshCw, CheckCircle, XCircle } from 'lucide-react';
@@ -22,6 +23,7 @@ interface ChannelListProps {
 }
 
 export const ChannelList = ({ channels, startIndex = 0, subscriberRanks, sortField, sortOrder, onSort }: ChannelListProps) => {
+  const t = useTranslations();
   const router = useRouter();
   
   // Helper function to get the appropriate rank for a channel
@@ -59,7 +61,7 @@ export const ChannelList = ({ channels, startIndex = 0, subscriberRanks, sortFie
   return (
     <div className="overflow-hidden">
       <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-900">VTuber Channels</h3>
+        <h3 className="text-lg font-semibold text-gray-900">{t('VTuber Channels')}</h3>
       </div>
 
       {/* Mobile Card View */}
@@ -113,12 +115,12 @@ export const ChannelList = ({ channels, startIndex = 0, subscriberRanks, sortFie
                       {isChannelActive(channel) ? (
                         <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-green-100 text-green-800 text-xs rounded-full">
                           <CheckCircle className="w-2 h-2" />
-                          Active
+                          {t('Active')}
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">
                           <XCircle className="w-2 h-2" />
-                          Inactive
+                          {t('Inactive')}
                         </span>
                       )}
                     </div>
@@ -136,22 +138,22 @@ export const ChannelList = ({ channels, startIndex = 0, subscriberRanks, sortFie
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                Rank
+                {t('Rank')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                Channel
+                {t('Channel')}
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                <SortButton field="subscribers">Subscribers</SortButton>
+                <SortButton field="subscribers">{t('Subscribers')}</SortButton>
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                <SortButton field="views">Views</SortButton>
+                <SortButton field="views">{t('Views')}</SortButton>
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                <SortButton field="published_at">Created</SortButton>
+                <SortButton field="published_at">{t('Created')}</SortButton>
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                <SortButton field="last_published_video_at">Last Video</SortButton>
+                <SortButton field="last_published_video_at">{t('Last Video')}</SortButton>
               </th>
               {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                 Status
@@ -217,7 +219,7 @@ export const ChannelList = ({ channels, startIndex = 0, subscriberRanks, sortFie
                       {formatDate(channel.last_published_video_at)}
                     </div>
                   ) : (
-                    <span className="text-gray-500">No videos</span>
+                    <span className="text-gray-500">{t('No videos')}</span>
                   )}
                 </td>
                 {/* <td className="px-6 py-4 whitespace-nowrap">

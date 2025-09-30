@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { Link, usePathname } from '@/i18n/navigation';
 import { 
   BarChart3, 
   Home, 
@@ -16,6 +16,7 @@ import {
   Plus,
   Github
 } from 'lucide-react';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -26,11 +27,12 @@ interface SidebarProps {
 
 export const Sidebar = ({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }: SidebarProps) => {
   const pathname = usePathname();
-
+  const t = useTranslations();
+  
   const navigation = [
-    { name: 'Home', href: '/', icon: Home },
-    { name: 'Videos', href: '/videos', icon: Play },
-    { name: 'Analytics', href: '/analytics', icon: BarChart3 },
+    { name: t('Home'), href: '/', icon: Home },
+    { name: t('Videos'), href: '/videos', icon: Play },
+    { name: t('Analytics'), href: '/analytics', icon: BarChart3 },
   ];
 
   const NavItem = ({ item, mobile = false }: { item: typeof navigation[0]; mobile?: boolean }) => {
@@ -130,7 +132,7 @@ export const Sidebar = ({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }:
           >
             <Plus className="w-5 h-5 flex-shrink-0" />
             {!isCollapsed && (
-              <span className="truncate">Submit new channel</span>
+              <span className="truncate">{t('Submit new channel')}</span>
             )}
           </Link>
           
@@ -148,13 +150,16 @@ export const Sidebar = ({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }:
           >
             <Github className="w-5 h-5 flex-shrink-0" />
             {!isCollapsed && (
-              <span className="truncate">Repository</span>
+              <span className="truncate">{t('Repository')}</span>
             )}
           </Link>
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-gray-200">
+        <div className="p-4 border-t border-gray-200 space-y-3">
+          {!isCollapsed && (
+            <LanguageSwitcher />
+          )}
           <div className={`flex items-center gap-2 text-sm text-gray-700 ${
             isCollapsed ? 'justify-center' : ''
           }`}>
@@ -167,7 +172,7 @@ export const Sidebar = ({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }:
                 className="hover:underline"
                 prefetch={false}
               >
-                Made by keRLos
+                {t('Made by keRLos')}
               </Link>
             )}
           </div>
@@ -224,7 +229,7 @@ export const Sidebar = ({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }:
             prefetch={false}
           >
             <Plus className="w-5 h-5 flex-shrink-0" />
-            <span className="truncate">Submit new channel</span>
+            <span className="truncate">{t('Submit new channel')}</span>
           </Link>
           
           {/* GitHub Repository Link */}
@@ -237,12 +242,13 @@ export const Sidebar = ({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }:
             prefetch={false}
           >
             <Github className="w-5 h-5 flex-shrink-0" />
-            <span className="truncate">Repository</span>
+            <span className="truncate">{t('Repository')}</span>
           </Link>
         </div>
 
         {/* Mobile Footer */}
-        <div className="p-4 border-t border-gray-200">
+        <div className="p-4 border-t border-gray-200 space-y-3">
+          <LanguageSwitcher />
           <div className="flex items-center gap-2 text-sm text-gray-700">
             <Activity className="w-4 h-4" />
             <Link
@@ -252,7 +258,7 @@ export const Sidebar = ({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }:
                 className="hover:underline"
                 prefetch={false}
               >
-                Made by keRLos
+                {t('Made by keRLos')}
               </Link>
           </div>
         </div>

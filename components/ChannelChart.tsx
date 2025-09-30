@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   LineChart,
   Line,
@@ -30,10 +31,10 @@ const CustomTooltip = ({ active, payload, label }: any) => {
           </p>
           <div className="space-y-1">
             <p className="text-blue-600 font-medium">
-              Subscribers: {data.subscribers.toLocaleString()}
+              {data.subscribersLabel}: {data.subscribers.toLocaleString()}
             </p>
             <p className="text-green-600 font-medium">
-              Views: {data.views.toLocaleString()}
+              {data.viewsLabel}: {data.views.toLocaleString()}
             </p>
           </div>
         </div>
@@ -58,6 +59,7 @@ const formatYAxisNumber = (value: number) => {
 };
 
 export default function ChannelChart({ channelId }: ChannelChartProps) {
+  const t = useTranslations();
   const { data: chartData, isLoading, error } = useChannelChartData(channelId);
 
   // Group data by month and format for the chart
@@ -85,8 +87,10 @@ export default function ChannelChart({ channelId }: ChannelChartProps) {
       .sort((a, b) => parseISO(a.date).getTime() - parseISO(b.date).getTime())
       .map((point) => ({
         ...point,
-        displayDate: format(parseISO(point.date), 'MMM yyyy'), // Fixed format without single quotes
+        displayDate: format(parseISO(point.date), 'MMM yyyy'),
         fullDate: format(parseISO(point.date), 'MMM dd, yyyy'),
+        subscribersLabel: t('Subscribers'),
+        viewsLabel: t('Views'),
       }));
   };
 
@@ -107,8 +111,8 @@ export default function ChannelChart({ channelId }: ChannelChartProps) {
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="text-center py-12">
           <div className="text-gray-500">
-            <p className="text-lg font-medium mb-2">Chart data unavailable</p>
-            <p className="text-sm">Unable to load chart data for this channel</p>
+            <p className="text-lg font-medium mb-2">{t('Chart data unavailable')}</p>
+            <p className="text-sm">{t('Unable to load chart data for this channel')}</p>
           </div>
         </div>
       </div>
@@ -121,8 +125,8 @@ export default function ChannelChart({ channelId }: ChannelChartProps) {
       <div className="bg-white rounded-lg shadow-md p-6">
         <div className="text-center py-12">
           <div className="text-gray-500">
-            <p className="text-lg font-medium mb-2">No chart data available</p>
-            <p className="text-sm">This channel doesn't have historical data yet</p>
+            <p className="text-lg font-medium mb-2">{t('No chart data available')}</p>
+            <p className="text-sm">{t("This channel doesn't have historical data yet")}</p>
           </div>
         </div>
       </div>
@@ -135,10 +139,10 @@ export default function ChannelChart({ channelId }: ChannelChartProps) {
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="mb-6">
         <h3 className="text-xl font-bold text-gray-900">
-          Channel Growth
+          {t('Channel Growth')}
         </h3>
         <p className="text-sm text-gray-600 mt-1">
-          Subscribers and views over time
+          {t('Subscribers and views over time')}
         </p>
       </div>
 
@@ -187,7 +191,7 @@ export default function ChannelChart({ channelId }: ChannelChartProps) {
               strokeWidth={2}
               dot={{ fill: '#3b82f6', strokeWidth: 1, r: 1 }}
               activeDot={{ r: 4 }}
-              name="Subscribers"
+              name={t('Subscribers')}
               yAxisId="subscribers"
             />
             <Line
@@ -197,7 +201,7 @@ export default function ChannelChart({ channelId }: ChannelChartProps) {
               strokeWidth={2}
               dot={{ fill: '#10b981', strokeWidth: 1, r: 1 }}
               activeDot={{ r: 4 }}
-              name="Views"
+              name={t('Views')}
               yAxisId="views"
             />
           </LineChart>

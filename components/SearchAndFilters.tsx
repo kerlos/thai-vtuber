@@ -1,6 +1,7 @@
 'use client';
 
 import { Search, Filter } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { DashboardFilters } from '@/types/vtuber';
 
 interface SearchAndFiltersProps {
@@ -10,6 +11,7 @@ interface SearchAndFiltersProps {
 }
 
 export const SearchAndFilters = ({ filters, onFiltersChange, totalResults }: SearchAndFiltersProps) => {
+  const t = useTranslations();
   const handleSearchChange = (search: string) => {
     onFiltersChange({ ...filters, search });
   };
@@ -30,7 +32,7 @@ export const SearchAndFilters = ({ filters, onFiltersChange, totalResults }: Sea
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-700 w-4 h-4" />
             <input
               type="text"
-              placeholder="Search VTuber channels..."
+              placeholder={t('searchPlaceholder')}
               value={filters.search}
               onChange={(e) => handleSearchChange(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
@@ -50,7 +52,7 @@ export const SearchAndFilters = ({ filters, onFiltersChange, totalResults }: Sea
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer"
                 />
                 <label htmlFor="show-inactive" className="text-sm font-medium text-gray-700 cursor-pointer">
-                  Show inactive channels
+                  {t('Show inactive channels')}
                 </label>
               </div>
             </div>
@@ -64,7 +66,7 @@ export const SearchAndFilters = ({ filters, onFiltersChange, totalResults }: Sea
                 className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer"
               />
               <label htmlFor="show-original-vtuber" className="text-sm font-medium text-gray-700 cursor-pointer">
-                Show original vtuber
+                {t('Show original vtuber')}
               </label>
             </div>
           </div>

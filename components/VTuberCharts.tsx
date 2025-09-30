@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   BarChart,
   Bar,
@@ -29,6 +30,8 @@ interface VTuberChartsProps {
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d', '#ffc658', '#ff7300'];
 
 export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
+  const t = useTranslations();
+  
   const chartData = useMemo(() => {
     // Top 10 channels by subscribers
     const topChannels = [...channels]
@@ -46,12 +49,12 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
     const inactiveChannels = channels.length - activeChannels;
     const activityData = [
       {
-        name: 'Active (90 days)',
+        name: t('Active (90 days)'),
         value: activeChannels,
         percentage: Math.round((activeChannels / channels.length) * 100),
       },
       {
-        name: 'Inactive (90+ days)',
+        name: t('Inactive (90+ days)'),
         value: inactiveChannels,
         percentage: Math.round((inactiveChannels / channels.length) * 100),
       },
@@ -107,11 +110,11 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
 
     // Channel Size Categories
     const sizeCategories = [
-      { name: 'Micro (0-10K)', min: 0, max: 10000, count: 0, color: '#8884d8' },
-      { name: 'Small (10K-100K)', min: 10000, max: 100000, count: 0, color: '#82ca9d' },
-      { name: 'Medium (100K-500K)', min: 100000, max: 500000, count: 0, color: '#ffc658' },
-      { name: 'Large (500K-1M)', min: 500000, max: 1000000, count: 0, color: '#ff7300' },
-      { name: 'Mega (1M+)', min: 1000000, max: Infinity, count: 0, color: '#0088FE' },
+      { name: t('Micro (0-10K)'), min: 0, max: 10000, count: 0, color: '#8884d8' },
+      { name: t('Small (10K-100K)'), min: 10000, max: 100000, count: 0, color: '#82ca9d' },
+      { name: t('Medium (100K-500K)'), min: 100000, max: 500000, count: 0, color: '#ffc658' },
+      { name: t('Large (500K-1M)'), min: 500000, max: 1000000, count: 0, color: '#ff7300' },
+      { name: t('Mega (1M+)'), min: 1000000, max: Infinity, count: 0, color: '#0088FE' },
     ];
 
     channels.forEach(channel => {
@@ -144,12 +147,12 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
     // Content Freshness Timeline
     const now = new Date();
     const freshnessRanges = [
-      { range: '0-7 days', days: 7, count: 0 },
-      { range: '8-30 days', days: 30, count: 0 },
-      { range: '31-90 days', days: 90, count: 0 },
-      { range: '91-180 days', days: 180, count: 0 },
-      { range: '181-365 days', days: 365, count: 0 },
-      { range: '1+ years', days: Infinity, count: 0 },
+      { range: t('0-7 days'), days: 7, count: 0 },
+      { range: t('8-30 days'), days: 30, count: 0 },
+      { range: t('31-90 days'), days: 90, count: 0 },
+      { range: t('91-180 days'), days: 180, count: 0 },
+      { range: t('181-365 days'), days: 365, count: 0 },
+      { range: t('1+ years'), days: Infinity, count: 0 },
     ];
 
     channels.forEach(channel => {
@@ -182,7 +185,7 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
       growthPotentialChannels,
       contentFreshnessData
     };
-  }, [channels]);
+  }, [channels, t]);
 
   const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
     if (active && payload && payload.length) {
@@ -204,7 +207,7 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-6">
       {/* Top Channels Bar Chart */}
       <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-        <h3 className="text-lg font-semibold mb-4 text-gray-900">Top 10 Channels by Subscribers</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-900">{t('Top 10 Channels by Subscribers')}</h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={chartData.topChannels} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -224,7 +227,7 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
 
       {/* Activity Status Distribution Pie Chart */}
       <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-        <h3 className="text-lg font-semibold mb-4 text-gray-900">Channel Activity Status</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-900">{t('Channel Activity Status')}</h3>
         <ResponsiveContainer width="100%" height={300}>
           <PieChart>
             <Pie
@@ -243,7 +246,7 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
             </Pie>
             <Tooltip 
               formatter={(value: number, name: string) => [
-                `${value} channels`,
+                `${value} ${t('channels')}`,
                 name
               ]}
               contentStyle={{ backgroundColor: 'white', border: '1px solid #ccc', borderRadius: '4px', color: 'black' }}
@@ -255,7 +258,7 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
 
       {/* Subscribers vs Views Scatter Plot */}
       <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-        <h3 className="text-lg font-semibold mb-4 text-gray-900">Subscribers vs Views Correlation</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-900">{t('Subscribers vs Views Correlation')}</h3>
         <ResponsiveContainer width="100%" height={300}>
           <ScatterChart data={chartData.scatterData} margin={{ top: 20, right: 20, bottom: 20, left: 20 }}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -263,13 +266,13 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
               dataKey="subscribers"
               type="number"
               tickFormatter={formatNumber}
-              name="Subscribers"
+              name={t('Subscribers')}
             />
             <YAxis
               dataKey="views"
               type="number"
               tickFormatter={formatNumber}
-              name="Views"
+              name={t('Views')}
             />
             <Tooltip
               cursor={{ strokeDasharray: '3 3' }}
@@ -280,9 +283,9 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
                   return (
                     <div className="bg-white p-3 border rounded shadow-lg">
                       <p className="text-sm font-medium text-black">{data.name}</p>
-                      <p className="text-sm text-black">Subscribers: {formatNumber(data.subscribers || 0)}</p>
-                      <p className="text-sm text-black">Views: {formatNumber(data.views || 0)}</p>
-                      <p className="text-sm text-black">Ratio: {(data.ratio || 0).toFixed(1)} views/subscriber</p>
+              <p className="text-sm text-black">{t('Subscribers')}: {formatNumber(data.subscribers || 0)}</p>
+              <p className="text-sm text-black">{t('Views')}: {formatNumber(data.views || 0)}</p>
+              <p className="text-sm text-black">{t('Ratio')}: {(data.ratio || 0).toFixed(1)} {t('viewsPerSubscriber')}</p>
                     </div>
                   );
                 }
@@ -296,7 +299,7 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
 
       {/* Channel Creation Timeline */}
       <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-        <h3 className="text-lg font-semibold mb-4 text-gray-900">Channel Creation Timeline</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-900">{t('Channel Creation Timeline')}</h3>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={chartData.yearlyActivity} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -313,20 +316,20 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
 
       {/* Engagement Rate Distribution */}
       <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-        <h3 className="text-lg font-semibold mb-4 text-gray-900">Engagement Rate Distribution</h3>
-        <p className="text-sm text-gray-600 mb-3">Views per subscriber ratio</p>
+        <h3 className="text-lg font-semibold mb-4 text-gray-900">{t('Engagement Rate Distribution')}</h3>
+        <p className="text-sm text-gray-600 mb-3">{t('Views per subscriber ratio')}</p>
         <ResponsiveContainer width="100%" height={300}>
           <AreaChart data={chartData.engagementData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="range" />
-            <YAxis />
+            <YAxis             />
             <Tooltip 
-              formatter={(value: number) => [`${value} channels`, 'Channels']}
-              labelFormatter={(label) => `Engagement Range: ${label}`}
+              formatter={(value: number) => [`${value} ${t('channels')}`, t('channels')]}
+              labelFormatter={(label) => `${t('Engagement Range')}: ${label}`}
               contentStyle={{ backgroundColor: 'white', border: '1px solid #ccc', borderRadius: '4px', color: 'black' }}
               labelStyle={{ color: 'black' }}
             />
-            <Area 
+            <Area
               type="monotone" 
               dataKey="channels" 
               stroke="#8884d8" 
@@ -339,7 +342,7 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
 
       {/* Channel Size Categories */}
       <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-        <h3 className="text-lg font-semibold mb-4 text-gray-900">Channel Size Distribution</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-900">{t('Channel Size Distribution')}</h3>
         <ResponsiveContainer width="100%" height={300}>
           <PieChart>
             <Pie
@@ -358,7 +361,7 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
             </Pie>
             <Tooltip 
               formatter={(value: number, name: string) => [
-                `${value} channels`,
+                `${value} ${t('channels')}`,
                 name
               ]}
               contentStyle={{ backgroundColor: 'white', border: '1px solid #ccc', borderRadius: '4px', color: 'black' }}
@@ -370,8 +373,8 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
 
       {/* Growth Potential Analysis */}
       <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-        <h3 className="text-lg font-semibold mb-4 text-gray-900">Growth Potential Channels</h3>
-        <p className="text-sm text-gray-600 mb-3">High engagement, under 100K subscribers</p>
+        <h3 className="text-lg font-semibold mb-4 text-gray-900">{t('Growth Potential Channels')}</h3>
+        <p className="text-sm text-gray-600 mb-3">{t('High engagement, under 100K subscribers')}</p>
         <ResponsiveContainer width="100%" height={300}>
           <BarChart data={chartData.growthPotentialChannels} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -391,8 +394,8 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
                   return (
                     <div className="bg-white p-3 border rounded shadow-lg">
                       <p className="text-sm font-medium text-black">{data.fullName}</p>
-                      <p className="text-sm text-black">Subscribers: {formatNumber(data.subscribers || 0)}</p>
-                      <p className="text-sm text-black">Engagement Rate: {(data.engagementRate || 0).toFixed(1)} views/sub</p>
+                      <p className="text-sm text-black">{t('Subscribers')}: {formatNumber(data.subscribers || 0)}</p>
+                      <p className="text-sm text-black">{t('Engagement Rate')}: {(data.engagementRate || 0).toFixed(1)} {t('viewsPerSub')}</p>
                     </div>
                   );
                 }
@@ -406,16 +409,16 @@ export const VTuberCharts = ({ channels }: VTuberChartsProps) => {
 
       {/* Content Freshness Timeline */}
       <div className="bg-white p-6 rounded-lg shadow-md border border-gray-200">
-        <h3 className="text-lg font-semibold mb-4 text-gray-900">Content Freshness Timeline</h3>
-        <p className="text-sm text-gray-600 mb-3">When channels last published content</p>
+        <h3 className="text-lg font-semibold mb-4 text-gray-900">{t('Content Freshness Timeline')}</h3>
+        <p className="text-sm text-gray-600 mb-3">{t('When channels last published content')}</p>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={chartData.contentFreshnessData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="range" />
             <YAxis />
             <Tooltip 
-              formatter={(value: number) => [`${value} channels`, 'Channels']}
-              labelFormatter={(label) => `Last Published: ${label}`}
+              formatter={(value: number) => [`${value} ${t('channels')}`, t('channels')]}
+              labelFormatter={(label) => `${t('Last Published')}: ${label}`}
               contentStyle={{ backgroundColor: 'white', border: '1px solid #ccc', borderRadius: '4px', color: 'black' }}
               labelStyle={{ color: 'black' }}
             />

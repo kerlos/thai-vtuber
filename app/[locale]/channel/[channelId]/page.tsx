@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import {
   useChannelDetails,
   useYouTubeChannelVideos,
@@ -30,6 +31,7 @@ const ErrorMessage = ({ message }: { message: string }) => (
 
 // Main Channel Page Component
 export default function ChannelPage() {
+  const t = useTranslations();
   const params = useParams();
   const channelId = params.channelId as string;
 
@@ -55,7 +57,7 @@ export default function ChannelPage() {
   if (channelError) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <ErrorMessage message="Failed to load channel data" />
+        <ErrorMessage message={t('Failed to load channel data')} />
       </div>
     );
   }
@@ -63,7 +65,7 @@ export default function ChannelPage() {
   if (!channel) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <ErrorMessage message="Channel not found" />
+        <ErrorMessage message={t('Channel not found')} />
       </div>
     );
   }
@@ -81,7 +83,7 @@ export default function ChannelPage() {
         {/* Videos Section */}
         <div className="py-8">
           <h2 className="text-xl font-bold text-gray-900 mb-6">
-            Latest Videos
+            {t('Latest Videos')}
           </h2>
           <VideoGrid
             videos={videos || []}

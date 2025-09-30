@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import Link from 'next/link';
 import { Users, Eye, TrendingUp, Activity, Loader, AlertCircle, RefreshCw, Github } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { useVTuberData } from '@/hooks/useVTuberData';
 import { DashboardFilters, PaginationState } from '@/types/vtuber';
 import { SortField, SortOrder } from '@/types/pagination';
@@ -12,6 +13,7 @@ import { ChannelList } from '@/components/ChannelList';
 import { Pagination } from '@/components/Pagination';
 
 export default function Dashboard() {
+  const t = useTranslations();
   const { data, isLoading, error, refetch } = useVTuberData();
   const [filters, setFilters] = useState<DashboardFilters>({
     search: '',
@@ -156,7 +158,7 @@ export default function Dashboard() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <Loader className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-500" />
-          <p className="text-gray-600">Loading VTuber data...</p>
+          <p className="text-gray-600">{t('loadingVTuberData')}</p>
         </div>
       </div>
     );
@@ -167,16 +169,16 @@ export default function Dashboard() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center max-w-md">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Failed to load data</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">{t('Failed to load data')}</h2>
           <p className="text-gray-600 mb-4">
-            {error instanceof Error ? error.message : 'An unexpected error occurred'}
+            {error instanceof Error ? error.message : t('An unexpected error occurred')}
           </p>
           <button
             onClick={handleRetry}
             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
-            Retry
+            {t('Retry')}
           </button>
         </div>
       </div>
@@ -188,9 +190,9 @@ export default function Dashboard() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Thai Vtuber Channels</h1>
+          <h1 className="text-3xl font-bold text-gray-900">{t('Thai Vtuber Channels')}</h1>
           <p className="mt-2 text-gray-600">
-            Browse and explore Thai VTuber channels
+            {t('Browse and explore Thai VTuber channels')}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -198,7 +200,7 @@ export default function Dashboard() {
             href="/register"
             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors text-sm font-medium"
           >
-            <span>Submit Channel</span>
+            <span>{t('Submit Channel')}</span>
           </Link>
           <Link
             href="https://github.com/kerlos/thai-vtuber"
@@ -207,7 +209,7 @@ export default function Dashboard() {
             className="flex items-center gap-2 px-3 py-2 bg-black text-white hover:bg-gray-800 rounded-lg transition-colors text-sm font-medium"
           >
             <Github className="w-4 h-4" />
-            <span className="hidden sm:inline">Repository</span>
+            <span className="hidden sm:inline">{t('Repository')}</span>
           </Link>
         </div>
       </div>
@@ -216,15 +218,15 @@ export default function Dashboard() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
             <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
               <div className="text-2xl font-bold text-gray-900">{stats.totalChannels}</div>
-              <div className="text-sm text-gray-600">Total Channels</div>
+              <div className="text-sm text-gray-600">{t('Total Channels')}</div>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
               <div className="text-2xl font-bold text-gray-900">{formatNumber(stats.totalSubscribers)}</div>
-              <div className="text-sm text-gray-600">Total Subscribers</div>
+              <div className="text-sm text-gray-600">{t('Total Subscribers')}</div>
             </div>
             <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
               <div className="text-2xl font-bold text-gray-900">{stats.activeChannels}</div>
-              <div className="text-sm text-gray-600">Active Channels</div>
+              <div className="text-sm text-gray-600">{t('Active Channels')}</div>
             </div>
           </div>
         )}
@@ -240,21 +242,21 @@ export default function Dashboard() {
         {filteredChannels.length === 0 && filters.search.trim() !== '' ? (
           <div className="bg-white rounded-lg shadow-md border border-gray-200 p-8 text-center">
             <AlertCircle className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No channels found</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('No channels found')}</h3>
             <p className="text-gray-600 mb-4">
-              We couldn't find any channels matching your search term "{filters.search}".
+              {t('We couldn\'t find any channels matching your search term')} "{filters.search}".
             </p>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
               <p className="text-sm text-blue-800 mb-2">
-                <strong>Don't see your favorite VTuber?</strong>
+                <strong>{t('Don\'t see your favorite VTuber?')}</strong>
               </p>
               <p className="text-sm text-blue-700">
-                You can submit a channel for inclusion via our{' '}
+                {t('You can submit a channel for inclusion via our')}{' '}
                 <Link 
                   href="/register"
                   className="font-semibold text-blue-600 hover:text-blue-800 underline"
                 >
-                  register page
+                  {t('register page')}
                 </Link>
               </p>
             </div>

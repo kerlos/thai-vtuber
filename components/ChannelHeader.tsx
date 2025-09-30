@@ -4,8 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ChannelDetail } from '@/types/vtuber';
 import { formatDistanceToNow } from 'date-fns';
-import { enUS } from 'date-fns/locale';
+import { enUS, th } from 'date-fns/locale';
 import { useState, useRef, useEffect } from 'react';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface ChannelHeaderProps {
   channel: ChannelDetail;
@@ -22,19 +23,20 @@ const formatNumber = (num: number) => {
 };
 
 // Format date to relative time
-const formatDate = (dateString: string) => {
+const formatDate = (dateString: string, locale: string, unknownText: string) => {
   try {
     return formatDistanceToNow(new Date(dateString), {
       addSuffix: true,
-      locale: enUS,
+      locale: locale === 'th' ? th : enUS,
     });
   } catch {
-    return 'Unknown';
+    return unknownText;
   }
 };
 
 // Enhanced Description Component
 function ChannelDescription({ description }: { description: string }) {
+  const t = useTranslations();
   const [isExpanded, setIsExpanded] = useState(false);
   const [showMoreButton, setShowMoreButton] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
@@ -109,14 +111,14 @@ function ChannelDescription({ description }: { description: string }) {
         >
           {isExpanded ? (
             <>
-              <span>Show less</span>
+              <span>{t('Show less')}</span>
               <svg className="w-4 h-4 transform rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </>
           ) : (
             <>
-              <span>...more</span>
+              <span>{t('showMore')}</span>
               <svg className="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
@@ -129,6 +131,9 @@ function ChannelDescription({ description }: { description: string }) {
 }
 
 export default function ChannelHeader({ channel }: ChannelHeaderProps) {
+  const t = useTranslations();
+  const locale = useLocale();
+
   return (
     <div className="bg-white border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-6">
@@ -175,9 +180,9 @@ export default function ChannelHeader({ channel }: ChannelHeaderProps) {
                 </h1>
                 
                 <div className="flex flex-wrap items-center gap-1 mb-3 text-sm text-gray-600">
-                  <span>{formatNumber(channel.subscribers)} subscribers</span>
+                  <span>{formatNumber(channel.subscribers)} {t('subscribers')}</span>
                   <span className="mx-1">•</span>
-                  <span>{formatNumber(channel.videos)} videos</span>
+                  <span>{formatNumber(channel.videos)} {t('videos')}</span>
                 </div>
                 
                 {channel.description && (
@@ -187,13 +192,13 @@ export default function ChannelHeader({ channel }: ChannelHeaderProps) {
                 <div className="flex flex-wrap gap-2 mb-4">
                   {!channel.is_rebranded && (
                   <span className={`px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800`}>
-                    Original Channel
+                    {t('Original Channel')}
                   </span>
                   )}
                   
                   {channel.last_published_video_at && (
                     <span className="px-3 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
-                      Latest video {formatDate(channel.last_published_video_at)}
+                      {t('Latest video')} {formatDate(channel.last_published_video_at, locale, t('Unknown'))}
                     </span>
                   )}
                 </div>
@@ -208,7 +213,7 @@ export default function ChannelHeader({ channel }: ChannelHeaderProps) {
                   prefetch={false}
                   className="bg-red-700 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-red-600 transition-colors inline-block"
                 >
-                  Subscribe
+                  {t('Subscribe')}
                 </Link>
               </div>
             </div>

@@ -4,7 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { YouTubeFeedItem } from '@/types/youtube';
 import { formatDistanceToNow } from 'date-fns';
-import { enUS } from 'date-fns/locale';
+import { enUS, th } from 'date-fns/locale';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface VideoGridProps {
   videos: YouTubeFeedItem[];
@@ -23,14 +24,14 @@ const formatNumber = (num: number) => {
 };
 
 // Format date to relative time
-const formatDate = (dateString: string) => {
+const formatDate = (dateString: string, locale: string, unknownText: string) => {
   try {
     return formatDistanceToNow(new Date(dateString), {
       addSuffix: true,
-      locale: enUS,
+      locale: locale === 'th' ? th : enUS,
     });
   } catch {
-    return 'Unknown';
+    return unknownText;
   }
 };
 
@@ -47,6 +48,9 @@ const VideoSkeleton = () => (
 );
 
 export default function VideoGrid({ videos, isLoading, error }: VideoGridProps) {
+  const t = useTranslations();
+  const locale = useLocale();
+  
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -61,8 +65,8 @@ export default function VideoGrid({ videos, isLoading, error }: VideoGridProps) 
     return (
       <div className="text-center py-12">
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg max-w-md mx-auto">
-          <h3 className="font-semibold mb-1">An error occurred</h3>
-          <p className="text-sm">Unable to load videos at this time</p>
+          <h3 className="font-semibold mb-1">{t('An error occurred')}</h3>
+          <p className="text-sm">{t('Unable to load videos at this time')}</p>
         </div>
       </div>
     );
@@ -76,8 +80,8 @@ export default function VideoGrid({ videos, isLoading, error }: VideoGridProps) 
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
           </svg>
         </div>
-        <h3 className="text-lg font-semibold text-gray-700 mb-2">No videos found</h3>
-        <p className="text-gray-500">This channel has no videos available</p>
+        <h3 className="text-lg font-semibold text-gray-700 mb-2">{t('No videos found')}</h3>
+        <p className="text-gray-500">{t('This channel has no videos available')}</p>
       </div>
     );
   }
@@ -128,9 +132,9 @@ export default function VideoGrid({ videos, isLoading, error }: VideoGridProps) 
               </p>
               
               <div className="flex items-center gap-2 text-xs text-gray-500">
-                <span>{formatNumber(video.views)} views</span>
+                <span>{formatNumber(video.views)} {t('views')}</span>
                 <span>•</span>
-                <span>{formatDate(video.published)}</span>
+                <span>{formatDate(video.published, locale, t('Unknown'))}</span>
               </div>
             </div>
           </Link>

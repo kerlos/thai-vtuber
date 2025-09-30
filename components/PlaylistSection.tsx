@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useYouTubePlaylist } from '@/hooks/useYouTubeData';
 import { formatDistanceToNow } from 'date-fns';
-import { enUS } from 'date-fns/locale';
+import { enUS, th } from 'date-fns/locale';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface PlaylistSectionProps {
   channelId: string;
@@ -32,19 +33,19 @@ const mockPlaylists = [
 ];
 
 // Format date to relative time
-const formatDate = (dateString: string) => {
+const formatDate = (dateString: string, locale: string, unknownText: string) => {
   try {
     return formatDistanceToNow(new Date(dateString), {
       addSuffix: true,
-      locale: enUS,
+      locale: locale === 'th' ? th : enUS,
     });
   } catch {
-    return 'Unknown';
+    return unknownText;
   }
 };
 
 // Playlist card component
-const PlaylistCard = ({ playlist, onSelect }: { playlist: any; onSelect: (id: string) => void }) => (
+const PlaylistCard = ({ playlist, onSelect, t, locale }: { playlist: any; onSelect: (id: string) => void; t: any; locale: string }) => (
   <div 
     className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
     onClick={() => onSelect(playlist.id)}
@@ -57,7 +58,7 @@ const PlaylistCard = ({ playlist, onSelect }: { playlist: any; onSelect: (id: st
         className="object-cover"
       />
       <div className="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white text-xs px-2 py-1 rounded">
-        {playlist.videoCount} videos
+        {playlist.videoCount} {t('videos')}
       </div>
     </div>
     
@@ -69,14 +70,14 @@ const PlaylistCard = ({ playlist, onSelect }: { playlist: any; onSelect: (id: st
         {playlist.description}
       </p>
       <p className="text-xs text-gray-500">
-        Updated {formatDate(playlist.lastUpdated)}
+        {t('Updated')} {formatDate(playlist.lastUpdated, locale, t('Unknown'))}
       </p>
     </div>
   </div>
 );
 
 // Playlist detail component
-const PlaylistDetail = ({ playlistId, onBack }: { playlistId: string; onBack: () => void }) => {
+const PlaylistDetail = ({ playlistId, onBack, t, locale }: { playlistId: string; onBack: () => void; t: any; locale: string }) => {
   const { data: videos, isLoading, error } = useYouTubePlaylist(playlistId, 20);
 
   if (isLoading) {
@@ -89,7 +90,7 @@ const PlaylistDetail = ({ playlistId, onBack }: { playlistId: string; onBack: ()
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
           </svg>
-          Back to Playlists
+          {t('Back to Playlists')}
         </button>
         <div className="animate-pulse space-y-4">
           {Array.from({ length: 5 }).map((_, i) => (
@@ -116,10 +117,10 @@ const PlaylistDetail = ({ playlistId, onBack }: { playlistId: string; onBack: ()
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
           </svg>
-          Back to Playlists
+          {t('Back to Playlists')}
         </button>
         <div className="text-center py-8">
-          <p className="text-red-600">Unable to load playlist</p>
+          <p className="text-red-600">{t('Unable to load playlist')}</p>
         </div>
       </div>
     );
@@ -161,9 +162,9 @@ const PlaylistDetail = ({ playlistId, onBack }: { playlistId: string; onBack: ()
                 {video.author}
               </p>
               <div className="flex items-center gap-2 text-xs text-gray-500">
-                <span>{video.views.toLocaleString()} views</span>
+                <span>{video.views.toLocaleString()} {t('views')}</span>
                 <span>•</span>
-                <span>{formatDate(video.published)}</span>
+                <span>{formatDate(video.published, locale, t('Unknown'))}</span>
               </div>
             </div>
             
@@ -174,13 +175,13 @@ const PlaylistDetail = ({ playlistId, onBack }: { playlistId: string; onBack: ()
                 rel="noopener noreferrer"
                 className="text-red-600 hover:text-red-700 text-sm font-medium"
               >
-                Play
+                {t('Play')}
               </Link>
             </div>
           </div>
         )) || (
           <div className="text-center py-8 text-gray-500">
-            No videos found in this playlist
+            {t('No videos found in this playlist')}
           </div>
         )}
       </div>
@@ -189,20 +190,24 @@ const PlaylistDetail = ({ playlistId, onBack }: { playlistId: string; onBack: ()
 };
 
 export default function PlaylistSection({ channelId }: PlaylistSectionProps) {
+  const t = useTranslations();
+  const locale = useLocale();
   const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>(null);
 
   if (selectedPlaylist) {
     return (
       <PlaylistDetail 
         playlistId={selectedPlaylist} 
-        onBack={() => setSelectedPlaylist(null)} 
+        onBack={() => setSelectedPlaylist(null)}
+        t={t}
+        locale={locale}
       />
     );
   }
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-6">Playlists</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('Playlists')}</h2>
       
       {mockPlaylists.length === 0 ? (
         <div className="text-center py-12">
@@ -211,8 +216,8 @@ export default function PlaylistSection({ channelId }: PlaylistSectionProps) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
             </svg>
           </div>
-          <h3 className="text-lg font-semibold text-gray-700 mb-2">No playlists yet</h3>
-          <p className="text-gray-500">This channel hasn't created any playlists</p>
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">{t('No playlists yet')}</h3>
+          <p className="text-gray-500">{t("This channel hasn't created any playlists")}</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -221,6 +226,8 @@ export default function PlaylistSection({ channelId }: PlaylistSectionProps) {
               key={playlist.id}
               playlist={playlist}
               onSelect={setSelectedPlaylist}
+              t={t}
+              locale={locale}
             />
           ))}
         </div>
