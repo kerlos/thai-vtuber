@@ -189,18 +189,18 @@ export default function Dashboard() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">{t('Thai Vtuber Channels')}</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{t('Thai Vtuber Channels')}</h1>
+          <p className="mt-1 md:mt-2 text-sm md:text-base text-gray-600">
             {t('Browse and explore Thai VTuber channels')}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap md:flex-nowrap w-full md:w-auto justify-end">
           <LanguageSwitcher />
           <Link
             href="/register"
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors text-sm font-medium"
+            className="flex items-center gap-2 px-3 md:px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition-colors text-xs md:text-sm font-medium whitespace-nowrap"
           >
             <span>{t('Submit Channel')}</span>
           </Link>
@@ -208,10 +208,10 @@ export default function Dashboard() {
             href="https://github.com/kerlos/thai-vtuber"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-3 py-2 bg-black text-white hover:bg-gray-800 rounded-lg transition-colors text-sm font-medium"
+            className="flex items-center gap-2 px-3 py-2 bg-black text-white hover:bg-gray-800 rounded-lg transition-colors text-xs md:text-sm font-medium"
           >
             <Github className="w-4 h-4" />
-            <span className="hidden sm:inline">{t('Repository')}</span>
+            <span className="hidden md:inline">{t('Repository')}</span>
           </Link>
         </div>
       </div>
