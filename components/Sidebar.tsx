@@ -165,15 +165,42 @@ export const Sidebar = ({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }:
           }`}>
             <Activity className="w-4 h-4" />
             {!isCollapsed && (
-              <Link
-                href="https://www.facebook.com/kerlosth"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline"
-                prefetch={false}
-              >
-                {t('Made by keRLos')}
-              </Link>
+              <div className="flex flex-col gap-1">
+                <div>
+                  {t('Made by')}{' '}
+                  <Link
+                    href="https://www.facebook.com/kerlosth"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline text-blue-600"
+                    prefetch={false}
+                  >
+                    keRLos
+                  </Link>
+                </div>
+                <div className="text-xs text-gray-600">
+                  {t('in collaboration with')}{' '}
+                  <Link
+                    href="https://www.youtube.com/@KamaiSanCh"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline text-blue-600"
+                    prefetch={false}
+                  >
+                    Kamai
+                  </Link>
+                  {' '}{t('and')}{' '}
+                  <Link
+                    href="https://x.com/chuymaster/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline text-blue-600"
+                    prefetch={false}
+                  >
+                    ChuyMaster
+                  </Link>
+                </div>
+              </div>
             )}
           </div>
         </div>
@@ -251,15 +278,42 @@ export const Sidebar = ({ isCollapsed, onToggle, isMobileOpen, onMobileToggle }:
           <LanguageSwitcher />
           <div className="flex items-center gap-2 text-sm text-gray-700">
             <Activity className="w-4 h-4" />
-            <Link
-                href="https://www.facebook.com/kerlosth"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline"
-                prefetch={false}
-              >
-                {t('Made by keRLos')}
-              </Link>
+            <div className="flex flex-col gap-1">
+              <div>
+                {t('Made by')}{' '}
+                <Link
+                  href="https://www.facebook.com/kerlosth"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline text-blue-600"
+                  prefetch={false}
+                >
+                  keRLos
+                </Link>
+              </div>
+              <div className="text-xs text-gray-600">
+                {t('in collaboration with')}{' '}
+                <Link
+                  href="https://www.youtube.com/@KamaiSanCh"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline text-blue-600"
+                  prefetch={false}
+                >
+                  kamaitachi
+                </Link>
+                {' '}{t('and')}{' '}
+                <Link
+                  href="https://x.com/chuymaster/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:underline text-blue-600"
+                  prefetch={false}
+                >
+                  chuymaster
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
