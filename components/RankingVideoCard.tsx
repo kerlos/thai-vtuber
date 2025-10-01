@@ -111,9 +111,18 @@ export default function RankingVideoCard({ video, rank }: RankingVideoCardProps)
           <div className="text-xs text-gray-600">
             <div className="flex items-center gap-1">
               <Eye className="w-3 h-3" />
-              <span>{formatNumber(video.view_count)} views</span>
-              <span>•</span>
-              <span>{formatDate(video.published_at)}</span>
+              {video.view_count && (
+                <>
+                  <span>{formatNumber(video.view_count)} views</span>
+                  <span>•</span>
+                </>
+              )}
+              {video.published_at && (
+                <>
+                  <span>{formatDate(video.published_at)}</span>
+                  <span>•</span>
+                </>
+              )}
             </div>
           </div>
         </div>
