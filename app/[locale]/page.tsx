@@ -1,17 +1,17 @@
 'use client';
 
-import { useState, useMemo } from 'react';
-import { Users, Eye, TrendingUp, Activity, Loader, AlertCircle, RefreshCw, Github } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { Link } from '@/i18n/navigation';
-import { useVTuberData } from '@/hooks/useVTuberData';
-import { DashboardFilters, PaginationState } from '@/types/vtuber';
-import { SortField, SortOrder } from '@/types/pagination';
-import { calculateDashboardStats, formatNumber, isChannelActive, getPaginatedItems } from '@/utils/vtuberStats';
-import { SearchAndFilters } from '@/components/SearchAndFilters';
 import { ChannelList } from '@/components/ChannelList';
-import { Pagination } from '@/components/Pagination';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { Pagination } from '@/components/Pagination';
+import { SearchAndFilters } from '@/components/SearchAndFilters';
+import { useVTuberData } from '@/hooks/useVTuberData';
+import { Link } from '@/i18n/navigation';
+import { SortField, SortOrder } from '@/types/pagination';
+import { DashboardFilters, PaginationState } from '@/types/vtuber';
+import { calculateDashboardStats, formatNumber, getPaginatedItems, isChannelActive } from '@/utils/vtuberStats';
+import { AlertCircle, Github, Loader, RefreshCw } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { useMemo, useState } from 'react';
 
 export default function Dashboard() {
   const t = useTranslations();

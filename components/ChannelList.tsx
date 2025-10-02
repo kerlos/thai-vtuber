@@ -1,14 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-import { sendGAEvent } from '@next/third-parties/google';
-import { useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
-import { VTuberChannel } from '@/types/vtuber';
-import { formatNumber, formatDate, isChannelActive } from '@/utils/vtuberStats';
-import { ExternalLink, Users, Eye, Calendar, RefreshCw, CheckCircle, XCircle } from 'lucide-react';
-import Image from 'next/image';
 import { SortField, SortOrder } from '@/types/pagination';
+import { VTuberChannel } from '@/types/vtuber';
+import { formatDate, formatNumber } from '@/utils/vtuberStats';
+import { sendGAEvent } from '@next/third-parties/google';
+import { Calendar, Eye, Users } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 
 interface ChannelListProps {
   channels: VTuberChannel[];
@@ -110,22 +109,6 @@ export const ChannelList = ({ channels, startIndex = 0, subscriberRanks, sortFie
                       {formatNumber(channel.views)}
                     </div>
                   </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      {isChannelActive(channel) ? (
-                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-green-100 text-green-800 text-xs rounded-full">
-                          <CheckCircle className="w-2 h-2" />
-                          {t('Active')}
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">
-                          <XCircle className="w-2 h-2" />
-                          {t('Inactive')}
-                        </span>
-                      )}
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -224,23 +207,6 @@ export const ChannelList = ({ channels, startIndex = 0, subscriberRanks, sortFie
                     <span className="text-gray-500">{t('No videos')}</span>
                   )}
                 </td>
-                {/* <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      {isChannelActive(channel) ? (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
-                          <CheckCircle className="w-3 h-3" />
-                          Active
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-full">
-                          <XCircle className="w-3 h-3" />
-                          Inactive
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </td> */}
               </tr>
             ))}
           </tbody>
