@@ -46,7 +46,7 @@ export default function UpcomingVideoCard({ video }: UpcomingVideoCardProps) {
   const [channelImageError, setChannelImageError] = useState(false);
   
   return (
-    <div className="group cursor-pointer">
+    <div className="group cursor-pointer mb-6">
       {/* Video Thumbnail */}
       <Link
         href={`https://www.youtube.com/watch?v=${video.id}`}

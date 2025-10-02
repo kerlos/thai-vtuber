@@ -7,6 +7,7 @@ import { RankingVideo } from '@/types/videos';
 import { formatDistanceToNow } from 'date-fns';
 import { enUS } from 'date-fns/locale';
 import { Eye } from 'lucide-react';
+import { useVTuberData } from '@/hooks/useVTuberData';
 
 interface RankingVideoCardProps {
   video: RankingVideo;
@@ -45,8 +46,15 @@ const getRankStyling = (rank: number) => {
 };
 
 export default function RankingVideoCard({ video, rank }: RankingVideoCardProps) {
+  const { data: vtuberData } = useVTuberData();
+  
+  // Find the channel from VTuber data
+  const channel = vtuberData?.result?.find(
+    (ch) => ch.channel_id === video.channel_id
+  );
+
   return (
-    <div className="group cursor-pointer">
+    <div className="group cursor-pointer mb-6">
       {/* Video Thumbnail */}
       <Link
         href={`https://www.youtube.com/watch?v=${video.id}`}
@@ -77,11 +85,30 @@ export default function RankingVideoCard({ video, rank }: RankingVideoCardProps)
 
       {/* Video Info */}
       <div className="flex gap-3">
-        {/* Rank indicator (alternative display) */}
+        {/* Channel thumbnail */}
         <div className="flex-shrink-0 pt-1">
-          <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-sm ${getRankStyling(rank)}`}>
-            {rank}
-          </div>
+          {channel?.thumbnail_icon_url ? (
+            <Link
+              href={`/channel/${video.channel_id}`}
+              className="block"
+              prefetch={false}
+              onClick={() => sendGAEvent('event', 'channel_click', {
+                channelId: video.channel_id
+              })}
+            >
+              <div className="w-9 h-9 rounded-full overflow-hidden bg-gray-200">
+                <Image
+                  src={channel.thumbnail_icon_url}
+                  alt={video.channel_title}
+                  width={36}
+                  height={36}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            </Link>
+          ) : (
+            <div className="w-9 h-9 rounded-full bg-gray-200" />
+          )}
         </div>
 
         {/* Video details */}
